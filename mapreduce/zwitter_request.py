@@ -16,6 +16,7 @@ class ZWitterRequest:
 		self.reference = values[5]
 		self.user_agent = values[6]
 		self.one = 1
+		self.seconds = int(time.mktime(self.time))
 
 	def from_facebook(self):
 		return self.referece.find('facebook.com') != -1

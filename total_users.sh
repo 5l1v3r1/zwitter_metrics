@@ -18,4 +18,5 @@ hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-streaming.jar \
   -reducer "mapreduce/count_reducer.py" \
   -combiner "mapreduce/count_reducer.py"
 
+hdfs dfs -rm -r /user/aseregin/uniq/$date
 hdfs dfs -cat /user/aseregin/total_users/$date/part-00000 | cut -f2 -d' ' > /home/aseregin/hw1/result/total_users/$date 
