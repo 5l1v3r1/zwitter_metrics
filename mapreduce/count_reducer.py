@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 
 import sys
+import re
 
 def main():
 	old_key = None
 	total = 0
+
 	for line in sys.stdin:
-		key, value = line.split()
+		key, value = re.match(r"(.+)\s(\d+)", line).groups()
 		value = int(value)
 		if key != old_key:
 			if old_key is not None:

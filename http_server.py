@@ -21,8 +21,13 @@ def iterate_between_dates(start_date, end_date):
 def index():
     return "OK!"
 
-
-metrics = [("total_hits", int)]
+string_list = lambda x: x.split()
+dict_string_int = lambda x: {val : int(count)  for p in x.split('\n') for val, count in p.split(' ')}
+metrics = [("total_hits", int), ("total_users", int), ("top_10_pages", string_list),
+		("average_session_time", float), ("average_session_length", float), ("bounce_rate", float),
+		("users_by_country", dict_string_int),
+		("new_users", int), ("lost_users", int),
+		("facebook_signup_conversion_3",float)]
 @app.route("/api/hw1")
 def api_hw1():
     start_date = request.args.get("start_date", None)
