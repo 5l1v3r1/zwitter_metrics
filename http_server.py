@@ -4,7 +4,7 @@ import getpass
 import hashlib
 import random
 import struct
-
+import re
 from flask import Flask, request, abort, jsonify
 
 app = Flask(__name__)
@@ -22,7 +22,14 @@ def index():
     return "OK!"
 
 string_list = lambda x: x.split()
-dict_string_int = lambda x: {val : int(count)  for p in x.split('\n') for val, count in p.split(' ')}
+
+
+def dict_string_int (content):
+	res = {}
+	for line in content.splitlines():
+		val, count = re.match(r"(.*)\s(\d*)", line.strip()).groups()
+		res[val] = int(count)
+	return res
 metrics = [("total_hits", int), ("total_users", int), ("top_10_pages", string_list),
 		("average_session_time", float), ("average_session_length", float), ("bounce_rate", float),
 		("users_by_country", dict_string_int),
@@ -43,7 +50,9 @@ def api_hw1():
 	result[date_str] = {}
         for metric, date_type in metrics:
 		with open('/home/aseregin/hw1/result/' + metric + '/' + date_str) as f:
-			result[date_str][metric] = date_type(f.read())
+			print metric
+			content = f.read()
+			result[date_str][metric] = date_type(content)
 		
 
     return jsonify(result)

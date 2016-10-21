@@ -8,7 +8,6 @@ def main():
 	command = sys.argv[1] #signup, all
 	current_date = sys.argv[2]
 		
-	dates_list = []
 	from_facebook = False
 	has_sign_up = False
 	has_sign_up_today = False

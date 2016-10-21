@@ -37,7 +37,7 @@ done
 
 echo $input
 
-
+date=$start_date
 #NEW USERS
 hdfs dfs -rm -r /user/aseregin/new_users/$date/tmp
 hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-streaming.jar \
@@ -45,7 +45,7 @@ hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-streaming.jar \
    $input \
   -output /user/aseregin/new_users/$date/tmp \
   -mapper "cat" \
-  -reducer "mapreduce/users_reducer.py new $start_date"
+  -reducer "mapreduce/users_reducer.py new $date"
 
 hdfs dfs -rm -r /user/aseregin/new_users/$date/res
 hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-streaming.jar \
@@ -60,7 +60,9 @@ hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-streaming.jar \
 hdfs dfs -rm -r /user/aseregin/new_users/$date/tmp
 hdfs dfs -cat /user/aseregin/new_users/$date/res/part-00000 | cut -f2 -d' ' > /home/aseregin/hw1/result/new_users/$date
 if [ -s /home/aseregin/hw1/result/new_users/$date ]
-then echo 0 > /home/aseregin/hw1/result/new_users/$date
+then echo
+else
+ echo 0 > /home/aseregin/hw1/result/new_users/$date
 fi
 
 #LOST USERS
@@ -70,7 +72,7 @@ hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-streaming.jar \
    $input \
   -output /user/aseregin/lost_users/$date/tmp \
   -mapper "cat" \
-  -reducer "mapreduce/users_reducer.py lost $start_date"
+  -reducer "mapreduce/users_reducer.py lost $date"
 
 hdfs dfs -rm -r /user/aseregin/lost_users/$date/res
 hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-streaming.jar \
@@ -85,7 +87,8 @@ hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-streaming.jar \
 hdfs dfs -rm -r /user/aseregin/lost_users/$date/tmp
 hdfs dfs -cat /user/aseregin/lost_users/$date/res/part-00000 | cut -f2 -d' ' > /home/aseregin/hw1/result/lost_users/$date
 if [ -s /home/aseregin/hw1/result/lost_users/$date ]
-then echo 0 > /home/aseregin/hw1/result/lost_users/$date
+then echo
+else echo 0 > /home/aseregin/hw1/result/lost_users/$date
 fi
 
 
