@@ -13,13 +13,14 @@ def main():
 		seconds = int(seconds)
 		if ip != old_ip or session_end + session_break < seconds:
 			if old_ip is not None:
-				print (old_ip, session_end - session_start, session_length)
+				print ('\t'.join(map(str, (1, session_end - session_start, session_length, int(session_length == 1)))))
 			session_start = seconds 
 			session_length = 0
 			old_ip = ip
 		session_length += 1
 		session_end = seconds
-	print (old_ip, session_end - session_start, session_length)
+	print ('\t'.join(map(str, (1, session_end - session_start, session_length, int(session_length == 1)))))
+	
 
 if __name__ == '__main__':
 	main()
