@@ -21,7 +21,7 @@ done
 
 echo $input
 
-
+date=$start_date
 hdfs dfs -rm -r /user/aseregin/facebook_conversion/$date/tmp
 hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-streaming.jar \
   -files mapreduce \

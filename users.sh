@@ -39,13 +39,16 @@ echo $input
 
 date=$start_date
 #NEW USERS
+
 hdfs dfs -rm -r /user/aseregin/new_users/$date/tmp
 hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-streaming.jar \
   -files mapreduce \
-   $input \
+   -Dmapred.reduce.tasks=1 \
+  $input \
   -output /user/aseregin/new_users/$date/tmp \
   -mapper "cat" \
   -reducer "mapreduce/users_reducer.py new $date"
+
 
 hdfs dfs -rm -r /user/aseregin/new_users/$date/res
 hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-streaming.jar \
@@ -69,6 +72,7 @@ fi
 hdfs dfs -rm -r /user/aseregin/lost_users/$date/tmp
 hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-streaming.jar \
   -files mapreduce \
+  -Dmapred.reduce.tasks=1 \
    $input \
   -output /user/aseregin/lost_users/$date/tmp \
   -mapper "cat" \
