@@ -10,12 +10,7 @@ def main():
 		if request.valid():
 			new_line = []
 			for field in fields:
-				if field in request.__dict__:
-					new_line.append(str(request.__dict__[field]))
-				elif field in request.__class__.__dict__:
-					new_line.append(str(request.__class__.__dict__[field](request)))
-				else:
-					assert False
+				new_line.append(str(request.__dict__[field]))
 			print ("\t".join(new_line))
 
 if __name__ == "__main__":
