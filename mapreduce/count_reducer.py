@@ -14,7 +14,10 @@ def main():
 			old_key = key
 			total = 0 
 		total += value
-	print (old_key + '\t' + str(total))
+	if old_key is None:
+		print ("0\t0")
+	else:
+		print (old_key + '\t' + str(total))
 
 if __name__ == '__main__':
 	main()
