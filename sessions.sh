@@ -23,6 +23,9 @@ hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-streaming.jar \
   -reducer "mapreduce/average_reducer.py"
 
 hdfs dfs -rm -r /user/aseregin/sessions/$date/tmp
+mkdir -p result/average_session_time
+mkdir -p result/average_session_length
+mkdir -p result/bounce_rate
 hdfs dfs -cat sessions/$date/res/part-00000 | cut -f1 > result/average_session_time/$date
 hdfs dfs -cat sessions/$date/res/part-00000 | cut -f2 > result/average_session_length/$date
 hdfs dfs -cat sessions/$date/res/part-00000 | cut -f3 > result/bounce_rate/$date

@@ -24,11 +24,11 @@ hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-streaming.jar \
   -reducer "mapreduce/count_reducer.py" \
   -combiner "mapreduce/count_reducer.py"
 
-#hdfs dfs -rm -r lost_users/$date/tmp
+hdfs dfs -rm -r lost_users/$date/tmp
+mkdir -p result/lost_users
 hdfs dfs -cat lost_users/$date/res/part-00000 | cut -f2  > result/lost_users/$date
 if [ ! -s result/lost_users/$date ]
-then echo
-else echo 0 > result/lost_users/$date
+then echo 0 > result/lost_users/$date
 fi
 
 

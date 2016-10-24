@@ -31,5 +31,6 @@ hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-streaming.jar \
   -reducer "mapreduce/average_reducer.py"
 
 hdfs dfs -rm -r facebook_conversion/$date/tmp
+mkdir -p result/facebook_signup_conversion_3
 hdfs dfs -cat facebook_conversion/$date/res/part-00000 > result/facebook_signup_conversion_3/$date
 rm -r new_users

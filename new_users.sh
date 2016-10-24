@@ -22,7 +22,7 @@ hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-streaming.jar \
   -mapper "sed -e 's/.*/1\t1/g'" \
   -reducer "mapreduce/count_reducer.py" \
   -combiner "mapreduce/count_reducer.py"
-
+mkdir -p result/new_users
 hdfs dfs -cat new_users/$date/res/part-00000 | cut -f2 > result/new_users/$date
 if [ ! -s result/new_users/$date ]
 then echo 0 > result/new_users/$date

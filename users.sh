@@ -9,3 +9,4 @@ hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-streaming.jar \
   		-reducer "mapreduce/uniq.py $date"
 	
 hdfs dfs -rm -r users/$end_date
+
