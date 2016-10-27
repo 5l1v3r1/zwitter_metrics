@@ -8,7 +8,7 @@ def main():
 	command = sys.argv[1] #new, lost
 	current_date = sys.argv[2]
 	first_date = datetime.datetime(*map(int, current_date.split('-'))) - datetime.timedelta(days = 13)
-	
+	first_date = first_date.strftime("%Y-%m-%d")	
 	dates_list = []
 	list_equal_to_element = lambda l, d: len(l) == 1 and l[0] == d
 	for line in sys.stdin:
