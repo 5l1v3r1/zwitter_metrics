@@ -3,7 +3,7 @@ list_of_dates=$(./get_list_of_dates.py $date 14)
 input=$(./input_from_dates.py "-input users/" $list_of_dates)
 echo $input
 
-dfs dfs -rm -r new_users/$date/tmp
+hdfs dfs -rm -r new_users/$date/tmp
 hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-streaming.jar \
   -files mapreduce \
    -Dmapred.reduce.tasks=1 \
@@ -28,7 +28,7 @@ if [ ! -s result/new_users/$date ]
 then echo 0 > result/new_users/$date
 fi
 end_date=$(date -I -d "$date - 3 day")
-hdfs dfs -rm -r new_users/$end_date/tmp
+#hdfs dfs -rm -r new_users/$end_date/tmp
 
 
 

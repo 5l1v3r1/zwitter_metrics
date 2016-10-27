@@ -33,4 +33,7 @@ hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-streaming.jar \
 hdfs dfs -rm -r facebook_conversion/$date/tmp
 mkdir -p result/facebook_signup_conversion_3
 hdfs dfs -cat facebook_conversion/$date/res/part-00000 > result/facebook_signup_conversion_3/$date
+if [ ! -s result/facebook_signup_conversion_3/$date ]
+then echo 0 > result/facebook_signup_conversion_3/$date
+fi
 rm -r new_users

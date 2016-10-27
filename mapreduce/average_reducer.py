@@ -12,7 +12,10 @@ def main():
 		else:
 			for i in range(len(values)):
 				total[i] += values[i]
-	print ('\t'.join(map(lambda x: str(x / total[0]), total[1:])))
+	if total is not None:
+		print ('\t'.join(map(lambda x: str(x / total[0]), total[1:])))
+	else:
+		print (0)
 		
 if __name__ == '__main__':
 	main()

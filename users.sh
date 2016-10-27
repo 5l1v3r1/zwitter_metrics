@@ -8,5 +8,5 @@ hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-streaming.jar \
   		-mapper "mapreduce/get_fields_mapper.py ip" \
   		-reducer "mapreduce/uniq.py $date"
 	
-hdfs dfs -rm -r users/$end_date
+#hdfs dfs -rm -r users/$end_date
 
