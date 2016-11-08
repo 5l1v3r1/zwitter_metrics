@@ -6,6 +6,7 @@ import random
 import struct
 import re
 from flask import Flask, request, abort, jsonify
+import os
 
 app = Flask(__name__)
 app.secret_key = "kkkeeeyyy"
@@ -45,11 +46,15 @@ def api_hw1():
     end_date = datetime.datetime(*map(int, end_date.split("-")))
 
     result = {}
-    for date in iterate_between_dates(start_date, end_date):
+    for date in iterate_between_dates(max(start_date, datetime.datetime(2016,10,07)), end_date):
 	date_str = date.strftime("%Y-%m-%d")
 	result[date_str] = {}
         for metric, date_type in metrics:
-		with open('/home/aseregin/hw1/result/' + metric + '/' + date_str) as f:
+		filename = '/home/aseregin/hw1/result/' + metric + '/' + date_str
+		if not os.path.isfile(filename):
+			result[date_str][metric] = 0
+			continue
+		with open(filename) as f:
 			print metric
 			content = f.read()
 			result[date_str][metric] = date_type(content)
