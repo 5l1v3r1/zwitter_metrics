@@ -1,7 +1,7 @@
 date=$1
 hdfs dfs -rm -r users_by_country/$date
 hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-streaming.jar \
-  -files mapreduce,ip.csv \
+  -files ../mapreduce,ip.csv \
   -Dmapred.reduce.tasks=1 \
   -input users/$date \
   -output users_by_country/$date \

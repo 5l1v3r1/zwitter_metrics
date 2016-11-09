@@ -1,7 +1,7 @@
 date=$1
 hdfs dfs -rm -r sessions/$date/tmp
 hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-streaming.jar \
-  -files mapreduce \
+  -files ../mapreduce \
   -D mapred.output.key.comparator.class=org.apache.hadoop.mapred.lib.KeyFieldBasedComparator \
   -D mapred.text.key.comparator.options='-k1,1 -k2n' \
   -D stream.num.map.output.key.fields=2 \
@@ -15,7 +15,7 @@ hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-streaming.jar \
 
 hdfs dfs -rm -r sessions/$date/res
 hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-streaming.jar \
-  -files mapreduce \
+  -files ../mapreduce \
   -Dmapred.reduce.tasks=1 \
   -input sessions/$date/tmp \
   -output sessions/$date/res \

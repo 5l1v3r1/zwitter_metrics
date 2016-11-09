@@ -1,7 +1,7 @@
 date=$1
 hdfs dfs -rm -r total_hits/$date
 hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-streaming.jar \
-  -files mapreduce \
+  -files ../mapreduce \
   -Dmapred.reduce.tasks=1 \
   -input /user/sandello/logs/access.log.$date \
   -output total_hits/$date \

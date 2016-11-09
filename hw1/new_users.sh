@@ -1,11 +1,11 @@
 date=$1
-list_of_dates=$(./get_list_of_dates.py $date 14)
-input=$(./input_from_dates.py "-input users/" $list_of_dates)
+list_of_dates=$(../get_list_of_dates.py $date 14)
+input=$(../input_from_dates.py "-input users/" $list_of_dates)
 echo $input
 
 hdfs dfs -rm -r new_users/$date/tmp
 hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-streaming.jar \
-  -files mapreduce \
+  -files ../mapreduce \
    -Dmapred.reduce.tasks=1 \
   $input \
   -output new_users/$date/tmp \
@@ -15,7 +15,7 @@ hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-streaming.jar \
 
 hdfs dfs -rm -r new_users/$date/res
 hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-streaming.jar \
-  -files mapreduce \
+  -files ../mapreduce \
   -Dmapred.reduce.tasks=1 \
   -input new_users/$date/tmp \
   -output new_users/$date/res \

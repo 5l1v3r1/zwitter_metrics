@@ -50,7 +50,7 @@ def api_hw1():
 	date_str = date.strftime("%Y-%m-%d")
 	result[date_str] = {}
         for metric, date_type in metrics:
-		filename = '/home/aseregin/hw1/result/' + metric + '/' + date_str
+		filename = '/home/aseregin/hw/hw1/result/' + metric + '/' + date_str
 		if not os.path.isfile(filename):
 			result[date_str][metric] = 0
 			continue
