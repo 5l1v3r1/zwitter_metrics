@@ -11,9 +11,9 @@ hdfs dfs -rm -r facebook_conversion/$date/tmp
 hadoop jar /opt/cloudera/parcels/CDH/lib/hadoop-mapreduce/hadoop-streaming.jar \
   -files ../mapreduce,new_users \
   -D mapred.output.key.comparator.class=org.apache.hadoop.mapred.lib.KeyFieldBasedComparator \
-  -D mapred.text.key.comparator.options='-k1,1 -k2n' \
+  -D mapred.text.key.comparator.options='-k1,1 -k2' \
   -D stream.num.map.output.key.fields=2 \
-  -D mapred.text.key.partitioner.options=-k1,1 \
+  -D mapred.text.key.partitioner.options='-k1,1' \
   -partitioner org.apache.hadoop.mapred.lib.KeyFieldBasedPartitioner \
   $input \
   -output facebook_conversion/$date/tmp \
