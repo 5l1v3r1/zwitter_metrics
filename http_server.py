@@ -7,10 +7,10 @@ import struct
 import re
 from flask import Flask, request, abort, jsonify
 import os
+import happybase
 
 app = Flask(__name__)
 app.secret_key = "kkkeeeyyy"
-
 
 def iterate_between_dates(start_date, end_date):
     span = end_date - start_date
@@ -21,6 +21,75 @@ def iterate_between_dates(start_date, end_date):
 @app.route("/")
 def index():
     return "OK!"
+
+
+HOSTS = ["hadoop2-%02d.yandex.ru" % i for i in xrange(11, 14)]
+host = random.choice(HOSTS)
+ 
+TABLE_PREFIX = 'bigdatashad_aseregin_'
+def get_dates_generator_from_request(request):
+    start_date = request.args.get("start_date", None)
+    end_date = request.args.get("end_date", None)
+    if start_date is None or end_date is None:
+        abort(400)
+    start_date = datetime.datetime(*map(int, start_date.split("-")))
+    end_date = datetime.datetime(*map(int, end_date.split("-")))
+    return iterate_between_dates(max(start_date, datetime.datetime(2016,10,07)), end_date)
+
+def get_result_for_hw2(request, key_name, get_method, default_val = []):
+	key = request.args.get(key_name, None)
+	if key is None:
+		abort(400)
+	result = {}
+	for date in get_dates_generator_from_request(request):
+		date_str = date.strftime("%Y-%m-%d")
+		prefix = unicode(date_str + '_' + key).encode('utf-8')
+		
+		try:	
+			result[date_str] = get_method(prefix)
+		except:
+			result[date_str] = []
+		if len(result[date_str]) == 0:
+			result[date_str] = default_val
+	return jsonify(result)
+
+@app.route("/api/hw2/profile_hits")
+def api_hw2_profile_hits():
+	conn = happybase.Connection(host)
+	table = conn.table(TABLE_PREFIX + 'profile_hits')
+	res = get_result_for_hw2(request, 'profile_id', lambda prefix: [int(value[b'cf:value'].decode('utf-8')) for key, value in table.scan(row_prefix = prefix)], [0] * 24)
+	conn.close()
+	return res
+
+@app.route("/api/hw2/profile_users")
+def api_hw2_profile_users():
+	conn = happybase.Connection(host)
+	table = conn.table(TABLE_PREFIX + 'profile_users')
+	res = get_result_for_hw2(request, 'profile_id', lambda prefix: [int(value[b'cf:value'].decode('utf-8')) for key, value in table.scan(row_prefix = prefix)], [0] * 24)
+	conn.close()
+	return res
+
+@app.route("/api/hw2/user_most_visited_profiles")
+def api_hw2_user_most_visited_profiles():
+	conn = happybase.Connection(host)
+	table = conn.table(TABLE_PREFIX + 'user_most_visited_profiles')
+	res = get_result_for_hw2(request, 'user_ip', lambda prefix: [value[b'cf:value'].decode('utf-8') for key, value in table.scan(row_prefix = prefix)])
+	conn.close()
+	return res
+
+
+
+
+@app.route("/api/hw2/profile_last_three_liked_users")
+def api_hw2_profile_last_three_liked_users():
+	conn = happybase.Connection(host)
+	table = conn.table(TABLE_PREFIX + 'profile_last_three_liked_users')
+	res = get_result_for_hw2(request, 'profile_id', lambda prefix: [value.decode('utf-8') for value in table.cells(row = prefix, column = 'cf:value')])
+	conn.close()
+	return res
+
+
+
 
 string_list = lambda x: x.split()
 
@@ -38,15 +107,8 @@ metrics = [("total_hits", int), ("total_users", int), ("top_10_pages", string_li
 		("facebook_signup_conversion_3",float)]
 @app.route("/api/hw1")
 def api_hw1():
-    start_date = request.args.get("start_date", None)
-    end_date = request.args.get("end_date", None)
-    if start_date is None or end_date is None:
-        abort(400)
-    start_date = datetime.datetime(*map(int, start_date.split("-")))
-    end_date = datetime.datetime(*map(int, end_date.split("-")))
-
     result = {}
-    for date in iterate_between_dates(max(start_date, datetime.datetime(2016,10,07)), end_date):
+    for date in get_dates_generator_from_request(request):
 	date_str = date.strftime("%Y-%m-%d")
 	result[date_str] = {}
         for metric, date_type in metrics:
@@ -84,6 +146,7 @@ def main():
     parser.set_defaults(debug=False)
 
     args = parser.parse_args()
+  
     app.run(host=args.host, port=args.port, debug=args.debug)
 
 if __name__ == "__main__":

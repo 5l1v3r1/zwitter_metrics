@@ -6,9 +6,9 @@ import re
 def get_profile(page, only_like):
 	match_obj = None
 	if only_like:
-		match_obj = re.match(r'^.id(\d{5}).*like=1', page)
+		match_obj = re.match(r'^.(id\d{5}).*like=1', page)
 	else:
-		match_obj = re.match(r'^.id(\d{5})', page)
+		match_obj = re.match(r'^.(id\d{5})', page)
 	if match_obj is not None:
 		return match_obj.group(1)
 	else:

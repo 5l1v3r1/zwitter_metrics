@@ -5,3 +5,9 @@ for job in $hw1_jobs
 do
 	(cd hw1 && ./$job.sh $date)
 done
+hw2_jobs="profile_hits_and_users user_most_visited_profiles profile_last_three_liked_users"
+for job in $hw2_jobs 
+do
+	(cd hw2 && ./$job.sh $date)
+done
+

@@ -39,7 +39,7 @@ def user_most_visited_profiles(conn, date):
 		ip_profile, count = line.split()
 		ip, profile = ip_profile.split('_')
 		count = str(10 ** 12 - int(count))
-		put_key_value(batch, '_'.join([date, ip, count.zfill(12), profile]),'id' + profile)
+		put_key_value(batch, '_'.join([date, ip, count.zfill(12), profile]), profile)
 
 	batch.send()
 
