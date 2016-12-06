@@ -104,7 +104,8 @@ metrics = [("total_hits", int), ("total_users", int), ("top_10_pages", string_li
 		("average_session_time", float), ("average_session_length", float), ("bounce_rate", float),
 		("users_by_country", dict_string_int),
 		("new_users", int), ("lost_users", int),
-		("facebook_signup_conversion_3",float)]
+		("facebook_signup_conversion_3", float),
+		('profile_liked_three_days', int)]
 @app.route("/api/hw1")
 def api_hw1():
     result = {}
@@ -114,7 +115,6 @@ def api_hw1():
         for metric, date_type in metrics:
 		filename = '/home/aseregin/hw/hw1/result/' + metric + '/' + date_str
 		if not os.path.isfile(filename):
-			result[date_str][metric] = 0
 			continue
 		with open(filename) as f:
 			print metric

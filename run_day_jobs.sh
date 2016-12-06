@@ -10,4 +10,9 @@ for job in $hw2_jobs
 do
 	(cd hw2 && ./$job.sh $date)
 done
+hw3_jobs="profile_liked_three_days"
+for job in $hw3_jobs 
+do
+	(cd hw3 && ./$job.sh $date)
+done
 

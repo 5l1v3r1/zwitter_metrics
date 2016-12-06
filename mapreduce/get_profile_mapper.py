@@ -19,10 +19,12 @@ def main():
 	fields = sys.argv[2:]
 	for line in sys.stdin:
 		request = zwitter_request.ZWitterRequest(line)
+		if not request.valid():
+			continue
 		request.profile = get_profile(request.page, only_like)
 		request.hour = str(request.time.tm_hour).zfill(2)
 		request.ip_profile = request.ip + '_' + str(request.profile)
-		if request.valid() and request.profile is not None:
+		if request.profile is not None:
 			new_line = []
 			for field in fields:
 				new_line.append(str(request.__dict__[field]))
